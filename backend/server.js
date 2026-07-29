@@ -8,6 +8,8 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
 const authRoutes = require("./src/routes/authRoutes");
+const projectRoutes = require("./src/routes/projectRoutes");
+const taskRoutes = require("./src/routes/taskRoutes")
 
 const errorHandler = require("./src/middleware/errorHandler");
 
@@ -31,7 +33,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/projects", projectRoutes);
+app.use("/api/projects", taskRoutes);
 
 app.use((req, res) => {
     res.status(404).json({
