@@ -7,7 +7,9 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
-const authRoutes = require("./routes/auth.routes");
+const authRoutes = require("./src/routes/authRoutes");
+
+const errorHandler = require("./src/middleware/errorHandler");
 
 const app = express();
 
@@ -24,13 +26,24 @@ app.use(cookieParser());
 app.get("/", (req, res) => {
     res.json({
         success: true,
-        message: "Task Board API"
+        message: "Task Manager API Running"
     });
 });
 
 app.use("/api/auth", authRoutes);
 
-module.exports = app;
+
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "Route Not Found"
+    });
+});
+
+
+app.use(errorHandler);
+
+
 
 const PORT = process.env.PORT || 5000;
 

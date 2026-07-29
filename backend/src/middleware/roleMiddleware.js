@@ -1,12 +1,17 @@
+const AppError = require("../utils/appError");
+
 module.exports = (...roles) => {
+
     return (req, res, next) => {
 
         if (!roles.includes(req.user.role)) {
-            return res.status(403).json({
-                message: "Not authorized to access this resource"
-            });
+            return next(
+                new AppError("You are not authorized to perform this action", 403)
+            );
         }
 
         next();
+
     };
+
 };
