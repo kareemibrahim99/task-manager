@@ -56,7 +56,7 @@ exports.createTask = asyncHandler(async (req, res) => {
 
 });
 
-// Supports ?status=&priority=&assignee= filtering, always scoped to req.project.
+
 exports.getTasks = asyncHandler(async (req, res) => {
 
     const { status, priority, assignee } = req.query;

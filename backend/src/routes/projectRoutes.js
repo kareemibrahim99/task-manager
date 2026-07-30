@@ -14,38 +14,36 @@ const {
   addMemberValidation,
 } = require("../validators/projectValidator");
 
-const taskRoutes = require("./taskRoutes");
-
-// Every project (and task) route requires a logged-in user.
 router.use(auth);
 
-router
-  .route("/")
-  .post(createProjectValidation, projectController.createProject)
-  .get(projectController.getProjects);
+router.post("/", createProjectValidation, projectController.createProject);
 
-router
-  .route("/:id")
-  .get(checkProjectAccess, projectController.getProject)
-  .put(checkProjectAccess, updateProjectValidation, projectController.updateProject)
-  .delete(checkProjectAccess, projectController.deleteProject);
+router.get("/", projectController.getProjects);
 
+router.get("/:id", checkProjectAccess, projectController.getProject);
+
+router.put(
+  "/:id",
+  checkProjectAccess,
+  updateProjectValidation,
+  projectController.updateProject,
+);
+
+router.delete("/:id", checkProjectAccess, projectController.deleteProject);
 
 router.post(
   "/:id/members",
   checkProjectAccess,
   roleMiddleware("Admin"),
   addMemberValidation,
-  projectController.addMember
+  projectController.addMember,
 );
 
 router.delete(
   "/:id/members/:userId",
   checkProjectAccess,
   roleMiddleware("Admin"),
-  projectController.removeMember
+  projectController.removeMember,
 );
-
-router.use("/:projectId/tasks", checkProjectAccess, taskRoutes);
 
 module.exports = router;
